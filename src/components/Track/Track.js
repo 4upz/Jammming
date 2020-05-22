@@ -5,16 +5,31 @@ export default class Track extends React.Component {
   constructor(props) {
     super(props);
     this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
   }
 
+  /**
+   * Calls upon the add track function in App component
+   */
   addTrack() {
     this.props.onAdd(this.props.track);
+  }
+
+  /**
+   * Calls upon the remove track function in App component
+   */
+  removeTrack() {
+    this.props.onRemove(this.props.track);
   }
 
   renderAction() {
     let actionButton;
     if (this.props.isRemoval) {
-      actionButton = <button className="Track-action">-</button>;
+      actionButton = (
+        <button className="Track-action" onClick={this.removeTrack}>
+          -
+        </button>
+      );
     } else {
       actionButton = (
         <button className="Track-action" onClick={this.addTrack}>
