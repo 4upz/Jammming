@@ -40,8 +40,20 @@ export default class App extends React.Component {
         },
       ],
     };
-    console.log(this.state.playlistName);
-    console.log(this.state.playlistTracks);
+    this.addTrack = this.addTrack.bind(this);
+  }
+
+  /**
+   * Adds a new track to the current playlist
+   * @param {object} track the track to be added
+   */
+  addTrack(track) {
+    const playlist = this.state.playlistTracks;
+    // If the song id doesn't exist in the current playlist...
+    if (!playlist.find((savedTrack) => savedTrack.id === track.id)) {
+      playlist.push(track);
+      this.setState({ playlistTracks: playlist });
+    }
   }
 
   render() {
@@ -53,7 +65,10 @@ export default class App extends React.Component {
         <div className="App">
           <SearchBar />
           <div className="App-playlist">
-            <SearchResults searchResults={this.state.searchResults} />
+            <SearchResults
+              searchResults={this.state.searchResults}
+              onAdd={this.addTrack}
+            />
             <Playlist
               playlistName={this.state.playlistName}
               playlistTracks={this.state.playlistTracks}

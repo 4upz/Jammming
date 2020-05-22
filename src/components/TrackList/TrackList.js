@@ -4,12 +4,19 @@ import "./TrackList.css";
 // Components
 import Track from "../Track/Track";
 
-const TrackList = ({ tracks }) => {
+const TrackList = ({ tracks, onAdd, isRemoval }) => {
   return (
     <div className="TrackList">
       {tracks.map((track) => {
         // Create a list of Track components
-        return <Track track={track} key={track.id} />;
+        return (
+          <Track
+            track={track}
+            key={track.id}
+            onAdd={onAdd}
+            isRemoval={isRemoval}
+          />
+        );
       })}
     </div>
   );
