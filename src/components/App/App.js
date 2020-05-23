@@ -6,6 +6,9 @@ import SearchBar from "../SearchBar/SearchBar";
 import SearchResults from "../SearchResults/SearchResults";
 import Playlist from "../Playlist/Playlist";
 
+// Spotify Util
+import Spotify from "../../utils/Spotify";
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -98,7 +101,8 @@ export default class App extends React.Component {
    * @param {string} searchTerm the term to search
    */
   search(searchTerm) {
-    console.log(searchTerm);
+    const results = Spotify.search(searchTerm);
+    this.setState({ searchResults: results });
   }
 
   render() {
