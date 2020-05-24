@@ -9,12 +9,16 @@ import Playlist from "../Playlist/Playlist";
 // Spotify Util
 import Spotify from "../../utils/Spotify";
 
+// Retrieve access token upon application start
+// TODO: Create a screen or prompt before doing this
+Spotify.getAccessToken();
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       searchResults: [],
-      playlistName: "",
+      playlistName: "New Playlist",
       playlistTracks: [],
     };
 
@@ -66,8 +70,9 @@ export default class App extends React.Component {
     const trackURIs = this.state.playlistTracks.map((track) => {
       return track.uri;
     });
-    console.log(`Saved Playlist!`);
-    console.log(trackURIs);
+    Spotify.savePlaylist(this.state.playlistName, trackURIs);
+    // Reset the playlists after it is saved
+    this.setState({ playlistName: "New Playlist", playlistTracks: [] });
   }
 
   /**

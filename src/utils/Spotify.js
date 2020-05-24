@@ -1,5 +1,5 @@
 const clientID = "664c3d6b58bc4428b06726d8c1645e73";
-const redirectURI = "http://localhost:3000/";
+const redirectURI = "https://4upz-jammming.surge.sh";
 
 let userAccessToken = undefined;
 let userAccessExpiration = undefined;
@@ -27,7 +27,6 @@ const Spotify = {
       // Otherwise, redirect to authorization site to restart process
       window.location = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
     }
-    return userAccessToken;
   },
   search(searchTerm) {
     return fetch(
@@ -58,6 +57,53 @@ const Spotify = {
       .catch((error) => {
         console.log(error);
       });
+  },
+  savePlaylist(playlistName, trackURIs) {
+    // Only save if both parameters aren't empty
+    if (playlistName !== "" && trackURIs) {
+      const accessToken = userAccessToken;
+      const headers = { Authorization: `Bearer ${accessToken}` };
+      let userID;
+      let playlistID;
+      // Send a request to fetch the User's ID
+      fetch(`https://api.spotify.com/v1/me`, {
+        headers: headers,
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((jsonResponse) => {
+          userID = jsonResponse.id;
+        })
+        .then(() => {
+          // Send a request to create a new playlist with the given name and fetch its ID
+          fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify({ name: playlistName }),
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((jsonResponse) => {
+              playlistID = jsonResponse.id;
+            })
+            .then(() => {
+              // Send a request to save the tracks to the newly created playlist
+              fetch(
+                `https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`,
+                {
+                  method: "POST",
+                  headers: headers,
+                  body: JSON.stringify({ uris: trackURIs }),
+                }
+              );
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   },
 };
 
