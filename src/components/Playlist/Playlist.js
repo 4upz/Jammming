@@ -14,10 +14,13 @@ const Playlist = ({
   const handleNameChange = (event) => {
     onNameChange(event.target.value);
   };
-
   return (
     <div className="Playlist">
-      <input value={playlistName} onChange={handleNameChange} />
+      <input
+        value={playlistName}
+        onChange={handleNameChange}
+        placeholder="New Playlist"
+      />
       <TrackList tracks={playlistTracks} onRemove={onRemove} isRemoval={true} />
       <button className="Playlist-save" onClick={onSave}>
         SAVE TO SPOTIFY

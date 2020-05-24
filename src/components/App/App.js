@@ -13,35 +13,9 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: [
-        {
-          name: "Sunshine",
-          artist: "4upz",
-          album: "Color Palette",
-          id: "1",
-        },
-        {
-          name: "Shenanigans",
-          artist: "4upz",
-          album: "Color Palette",
-          id: "2",
-        },
-        {
-          name: "Time Machine",
-          artist: "4upz",
-          album: "Color Palette",
-          id: "3",
-        },
-      ],
-      playlistName: "New Playlist",
-      playlistTracks: [
-        {
-          name: "WYM",
-          artist: "4upz",
-          album: "Son of October",
-          id: "4",
-        },
-      ],
+      searchResults: [],
+      playlistName: "",
+      playlistTracks: [],
     };
 
     this.addTrack = this.addTrack.bind(this);
@@ -101,8 +75,9 @@ export default class App extends React.Component {
    * @param {string} searchTerm the term to search
    */
   search(searchTerm) {
-    const results = Spotify.search(searchTerm);
-    this.setState({ searchResults: results });
+    Spotify.search(searchTerm).then((searchResults) =>
+      this.setState({ searchResults: searchResults })
+    );
   }
 
   render() {
