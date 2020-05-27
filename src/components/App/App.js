@@ -22,11 +22,13 @@ export default class App extends React.Component {
       playlistTracks: [],
     };
 
+    // Bind Methods
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    this.filteredSearchResults = this.filteredSearchResults.bind(this);
   }
 
   /**
@@ -85,6 +87,19 @@ export default class App extends React.Component {
     );
   }
 
+  /**
+   * Filters the search results based on songs that aren't saved in the playlist
+   */
+  filteredSearchResults() {
+    // Filters out tracks from the given list that aren't in the current playlist
+    const playlist = this.state.playlistTracks;
+    const searchResults = this.state.searchResults;
+    return searchResults.filter((track) => {
+      // Keep the track in the list if a duplicate isn't found in the playlist
+      return !playlist.find((savedTrack) => savedTrack.id === track.id);
+    });
+  }
+
   render() {
     return (
       <div>
@@ -95,7 +110,7 @@ export default class App extends React.Component {
           <SearchBar onSearch={this.search} />
           <div className="App-playlist">
             <SearchResults
-              searchResults={this.state.searchResults}
+              searchResults={this.filteredSearchResults()}
               onAdd={this.addTrack}
             />
             <Playlist
