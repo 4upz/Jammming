@@ -1,6 +1,6 @@
 const clientID = "664c3d6b58bc4428b06726d8c1645e73";
 // Set this to localhost if in dev mode, or to your domain when building
-const redirectURI = "http://localhost:3000/";
+const redirectURI = "https://4upz-jammming.surge.sh";
 
 let userAccessToken = undefined;
 let userAccessExpiration = undefined;
